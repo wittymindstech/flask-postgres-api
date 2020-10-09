@@ -380,9 +380,16 @@ class DeployBot(Resource):
         bot = BotModel(id=bot_id, bot_name=args['bot_name'])
 
         dirName = str(bot.bot_name)
+        dirName1 = r"C:\Users\gaurav_kumar32\vip_server\jarvis_vip_server\pcf_deployment"
+        dirName2 = r"C:\Users\gaurav_kumar32\vip_actions\jarvis_vip_actions\pcf_deployment"
 
         try:
-            subprocess.call('rasa actions', shell=True, cwd=dirName)
+            #subprocess.call('rasa actions', shell=True, cwd=dirName)
+            p1=Popen('rasa actions -p 8080',stdout=subprocess.PIPE,stderr=subprocess.PIPE,cwd=dirName1)
+            p1.communicate()           
+            p2=Popen('rasa run --credentials credentials.yml --endpoints ../pcf_instance_files/Dev/endpoints_dev.yml -p 5010 --enable-api --cors "*"',stdout=subprocess.PIPE,stderr=subprocess.PIPE,cwd=dirName2)
+            p2.communicate()
+
 
         except FileNotFoundError:
             print("Directory ", dirName, " doesn't found")
